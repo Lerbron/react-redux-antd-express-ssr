@@ -13,11 +13,13 @@ import {
 } from 'redux-devtools-extension';
 let middleware = [thunk]
 
+const IS_DEV = process.env.NODE_ENV == 'development'
+
 // 如果是在客户端环境，并且是开发模式，那么打印redux日志
-if (process.env.NODE_ENV == 'development' && __CLIENT__) middleware.push(createLogger())
+if (IS_DEV && __CLIENT__) middleware.push(createLogger())
 
 export default function configureStore(initialState) {
-  const store = process.env.NODE_ENV == 'development' ? createStore(rootReducer, initialState, composeWithDevTools(compose(applyMiddleware(...middleware)))) : createStore(rootReducer, initialState, compose(applyMiddleware(...middleware)))
+  const store = IS_DEV == 'development' ? createStore(rootReducer, initialState, composeWithDevTools(compose(applyMiddleware(...middleware)))) : createStore(rootReducer, initialState, compose(applyMiddleware(...middleware)))
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
