@@ -1,14 +1,19 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import Meta from "@/components/meta";
 import { getDetail } from "@/store/actions/test";
 
 function Detail({ detail }) {
+  const [num, setNum] = useState(0);
+  useEffect(() => {
+    setNum(1);
+  }, [detail]);
   return (
     <Fragment>
       <Meta title={detail.title}>
         <meta name="description" content={detail.title}></meta>
       </Meta>
+      <div>{num}</div>
       <div>{detail.title}</div>
       <div dangerouslySetInnerHTML={{ __html: detail.content }}></div>
     </Fragment>
@@ -17,7 +22,7 @@ function Detail({ detail }) {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    detail: state.test.detail
+    detail: state.test.detail,
   };
 };
 
@@ -29,18 +34,18 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 Detail = connect(mapStateToProps, mapDispatchToProps)(Detail);
 Detail.preFetch = ({ store, match, query }) => {
-  return new Promise(async function(resolve, reject) {
+  return new Promise(async function (resolve, reject) {
     let { dispatch, getState } = store;
 
     const params = {
       limit: 1,
-      page: 1
+      page: 1,
     };
 
     const promises = [dispatch(getDetail(params))];
     const [data] = await Promise.all(promises);
     resolve({
-      code: 200
+      code: 200,
     });
   });
 };
