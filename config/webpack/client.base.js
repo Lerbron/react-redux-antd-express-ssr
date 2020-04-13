@@ -19,7 +19,7 @@ const postcssConfig = {
     plugins: () => [
       require('postcss-flexbugs-fixes'),
       require('autoprefixer')({
-        browsers: ['last 2 versions'] // https://browserl.ist/?q=last+2+version
+        overrideBrowserslist: ['last 2 versions'] // https://browserl.ist/?q=last+2+version
       })
     ]
   }

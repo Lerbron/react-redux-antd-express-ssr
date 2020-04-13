@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Router } from "react-router-dom";
+
+const createHistory = require("history").createBrowserHistory;
 import { Provider } from "react-redux";
 import { matchPath } from "react-router";
 import parseUrl from "@/utils/parseUrl";
@@ -12,35 +14,26 @@ import AppRouter, { routes } from "@/router";
 import "../pages/global.scss";
 
 class AppRoute extends React.Component {
-  state = {
-    path: this.props.initPath
-  };
+  componentDidMount() {
+    history.listen((location, action) => {
+      let { pathname, search } = location;
+      let _route = null,
+        _match = null;
+      routes.some((route) => {
+        let match = matchPath(pathname, route);
+        if (match && match.path) {
+          _route = route;
+          _match = match;
+          return true;
+        }
+      });
 
-  static getDerivedStateFromProps(props, state) {
-    let _route = null,
-      _match = null;
-    routes.some(route => {
-      let match = matchPath(window.location.pathname, route);
-      if (match && match.path) {
-        _route = route;
-        _match = match;
-        return true;
-      }
-    });
-
-    if (_route.path != state.path) {
-      let { appStore } = props;
-      let { search } = location;
+      let { appStore } = this.props;
       const query = search ? parseUrl(search) : null;
       if (_route && _route.component && _route.component.preFetch) {
         _route.component.preFetch({ store: appStore, _match, query });
       }
-      return {
-        path: _route.path
-      };
-    }
-
-    return {};
+    });
   }
 
   render() {
@@ -50,11 +43,12 @@ class AppRoute extends React.Component {
 
 // 从页面中获取服务端生产redux数据，作为客户端redux初始值
 const store = configureStore(window.__initState__);
+const history = createHistory();
 
 const run = async () => {
   let _route = null;
 
-  routes.some(route => {
+  routes.some((route) => {
     let match = matchPath(window.location.pathname, route);
     if (match && match.path) {
       _route = route;
@@ -66,13 +60,13 @@ const run = async () => {
 
   ReactDOM.hydrate(
     <Provider store={store}>
-      <BrowserRouter>
+      <Router history={history}>
         <AppRoute
           pathname={location.pathname}
           appStore={store}
           initPath={_route.path}
         />
-      </BrowserRouter>
+      </Router>
     </Provider>,
     document.getElementById("app")
   );
