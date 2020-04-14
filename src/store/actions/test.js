@@ -17,8 +17,10 @@ export function getCategory() {
             dispatch(getCategoryAction(data.result.items))
             resolve(data)
           } else {
-            reject(err)
+            reject && reject(data)
           }
+        }, err => {
+          reject && reject(err)
         })
     })
   }
@@ -47,8 +49,10 @@ export function getList(params) {
             dispatch(getListActions(data.data, page))
             resolve(data)
           } else {
-            reject(err)
+            reject(data)
           }
+        }, err => {
+          reject && reject(err)
         })
     })
   }
@@ -74,8 +78,10 @@ export function getDetailInfo(param) {
             dispatch(getDetailInfoAction(data.result.items))
             resolve(data)
           } else {
-            reject(err)
+            reject && reject(data)
           }
+        }, err => {
+          reject && reject(err)
         })
     })
   }
@@ -104,8 +110,10 @@ export function getDetail(params) {
             dispatch(getDetailAction(data.data[0]))
             resolve(data)
           } else {
-            reject(err)
+            reject && reject(data)
           }
+        }, err => {
+          reject && reject(err)
         })
     })
   }
