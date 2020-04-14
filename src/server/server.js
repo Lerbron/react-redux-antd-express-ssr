@@ -36,11 +36,11 @@ app.use(cookieParser());
 app.use(compress());
 app.use(express.static("./dist/client"));
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   // 计算页面加载完成花费的时间
   var exec_start_at = Date.now();
   var _send = res.send;
-  res.send = function() {
+  res.send = function () {
     // 发送Header
     res.set("X-Execution-Time", String(Date.now() - exec_start_at) + " ms");
     // 调用原始处理函数
@@ -48,23 +48,26 @@ app.use(function(req, res, next) {
   };
   next();
 });
+const devMode = process.env.NODE_ENV === "development";
 const devProxy = {
   "/api": {
     target: "https://cnodejs.org",
-    changeOrigin: true
-  }
+    changeOrigin: true,
+  },
 };
 
-Object.keys(devProxy).forEach(function(context) {
-  app.use(createProxyMiddleware(context, devProxy[context]));
-});
+if (devMode) {
+  Object.keys(devProxy).forEach(function (context) {
+    app.use(createProxyMiddleware(context, devProxy[context]));
+  });
+}
 
 app.get("*", async (req, res) => {
   let store = configureStore(JSON.parse(initialStateJSON));
   let _route = null,
     _match = null;
 
-  routes.some(route => {
+  routes.some((route) => {
     let match = matchPath(req.url.split("?")[0], route);
     if (match && match.path) {
       _route = route;
@@ -74,14 +77,14 @@ app.get("*", async (req, res) => {
   });
 
   let context = {
-    code: 200
+    code: 200,
   };
 
   if (_route.component && _route.component.preFetch) {
     context = await _route.component.preFetch({
       store,
       match: _match,
-      query: req.query
+      query: req.query,
     });
   }
 
@@ -112,7 +115,7 @@ app.get("*", async (req, res) => {
 
   if (context.code == 302) {
     res.writeHead(302, {
-      Location: context.url
+      Location: context.url,
     });
   } else {
     res.status(context.code);
