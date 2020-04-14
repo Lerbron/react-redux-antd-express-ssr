@@ -4,6 +4,12 @@ const path = require('path')
 const chalk = require('chalk')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
+const HappyPack = require('happypack');
+const os = require('os');
+
+const happyThreadPool = HappyPack.ThreadPool({
+  size: os.cpus().length
+});
 // const OfflinePlugin = require('offline-plugin');
 
 const config = require('../index')
@@ -76,18 +82,8 @@ module.exports = {
       {
         test: /\.js$/i,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          plugins: [
-            [require.resolve('babel-plugin-import'),
-              {
-                style: 'css',
-                libraryName: 'antd',
-                libraryDirectory: 'es'
-              }
-            ]
-          ]
-        }
+        // loader: 'babel-loader',
+        loader: 'happypack/loader?id=happybabel',
       },
       {
         test: /\.scss$/,
@@ -147,10 +143,38 @@ module.exports = {
   },
 
   plugins: [
-    // new webpack.ProvidePlugin({
-    //   $: "jquery",
-    //   jQuery: "jquery"
-    // }),
+    new HappyPack({
+      id: 'happybabel',
+      loaders: [{
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+          presets: [
+            require.resolve('@babel/preset-env'),
+            require.resolve('@babel/preset-react'),
+          ],
+          plugins: [
+            require.resolve('@babel/plugin-transform-async-to-generator'),
+            require.resolve('@babel/plugin-syntax-dynamic-import'),
+            require.resolve('@babel/plugin-proposal-class-properties'),
+            require.resolve('@babel/plugin-proposal-export-default-from'),
+            require.resolve('@babel/plugin-transform-runtime'),
+            require.resolve('@babel/plugin-transform-modules-commonjs'),
+            require.resolve('babel-plugin-dynamic-import-webpack'),
+            [require.resolve('babel-plugin-import'),
+              {
+                style: 'css',
+                libraryName: 'antd',
+                libraryDirectory: 'es'
+              }
+            ]
+          ]
+        }
+      }],
+      threadPool: happyThreadPool,
+      // cache: true,
+      verbose: true
+    }),
 
     new webpack.DefinePlugin({
       __SERVER__: 'false',

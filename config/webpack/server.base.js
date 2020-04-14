@@ -1,9 +1,14 @@
 const webpack = require('webpack')
 // const HtmlwebpackPlugin = require('html-webpack-plugin');
 const path = require('path')
+const os = require('os');
+
 const nodeExternals = require('webpack-node-externals')
 // const CopyWebpackPlugin = require('copy-webpack-plugin');
-
+const HappyPack = require('happypack');
+const happyThreadPool = HappyPack.ThreadPool({
+  size: os.cpus().length
+});
 const config = require('../index')
 
 module.exports = {
@@ -48,7 +53,9 @@ module.exports = {
       {
         test: /\.js$/i,
         exclude: /node_modules/,
-        loader: 'babel'
+        // loader: 'babel',
+        loader: 'happypack/loader?id=happybabel',
+
       },
 
       // scss 文件解析
@@ -88,7 +95,32 @@ module.exports = {
     new webpack.DefinePlugin({
       __SERVER__: 'true',
       __CLIENT__: 'false'
-    })
+    }),
+    new HappyPack({
+      id: 'happybabel',
+      loaders: [{
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+          presets: [
+            require.resolve('@babel/preset-env'),
+            require.resolve('@babel/preset-react'),
+          ],
+          plugins: [
+            require.resolve('@babel/plugin-transform-async-to-generator'),
+            require.resolve('@babel/plugin-syntax-dynamic-import'),
+            require.resolve('@babel/plugin-proposal-class-properties'),
+            require.resolve('@babel/plugin-proposal-export-default-from'),
+            require.resolve('@babel/plugin-transform-runtime'),
+            require.resolve('@babel/plugin-transform-modules-commonjs'),
+            require.resolve('babel-plugin-dynamic-import-webpack'),
+          ]
+        }
+      }],
+      threadPool: happyThreadPool,
+      // cache: true,
+      verbose: true
+    }),
 
     // new CopyWebpackPlugin([
     //   { from: 'src/server/amp/views', to: 'views/' }
