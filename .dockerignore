@@ -38,3 +38,9 @@ jspm_packages
 node_modules
 .vscode
 dist
+Dockerfile*
+docker-compose*
+.dockerignore
+.git
+.gitignore
+LICENSE

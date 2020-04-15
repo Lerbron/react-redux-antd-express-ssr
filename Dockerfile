@@ -1,6 +1,6 @@
 FROM node:10.16.3
 WORKDIR /home/Service
 COPY . .
-RUN yarn global add pm2 && yarn && yarn run dist
+RUN yarn && yarn run dist
 EXPOSE 4000
-CMD ["yarn", "pm2"]
+CMD node dist/server/server.js
