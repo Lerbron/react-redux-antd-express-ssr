@@ -9,7 +9,7 @@
     "dist": "NODE_ENV=production webpack --config config/webpack/server.pro.js && NODE_ENV=production webpack --config config/webpack/client.pro.js",
     "analyzer": "npm run dist",
     "server": "node dist/server/server.js",
-    "pm2": "pm2 start ./dist/server/server.js",
+    "pm2": "pm2 start pm2.json",
     "build": "yarn run dist && yarn run pm2"
   },
   "engines": {
