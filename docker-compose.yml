@@ -1,0 +1,14 @@
+version: "3"
+services:
+  node-ssr:
+    build: ./
+    image: node-ssr
+    container_name: node-ssr
+    ports:
+      - 4000:4000
+  nginx-ssr:
+    build: ./nginx
+    image: nginx-ssr
+    container_name: nginx-ssr
+    ports:
+      - 8000:80
