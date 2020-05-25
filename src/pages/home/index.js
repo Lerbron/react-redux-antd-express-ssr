@@ -30,7 +30,7 @@ class Home extends React.Component {
         <Meta title="首页" />
 
         <div>Home page!! hello world!!! hhh </div>
-        <button onClick={this.loadMore}>Load more</button>
+        <Button onClick={this.loadMore}>Load more</Button>
         <Button type="primary">Antd </Button>
         <Empty />
         {categories.map((category, idx) => {
