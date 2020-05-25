@@ -21,14 +21,14 @@ module.exports = function (api) {
       //   "libraryDirectory": "es",
       //   "style": "css" // `style: true` 会加载 less 文件
       // }],
-      ["react-css-modules", {
-        "generateScopedName": config.class_scoped_name,
-        "filetypes": {
-          ".scss": {
-            "syntax": "postcss-scss"
-          }
-        }
-      }],
+      // ["react-css-modules", {
+      //   "generateScopedName": config.class_scoped_name,
+      //   "filetypes": {
+      //     ".scss": {
+      //       "syntax": "postcss-scss"
+      //     }
+      //   }
+      // }],
 
     ]
 

@@ -14,7 +14,7 @@ function Detail({ detailInfo, match, ...props }) {
       </Meta>
       <div>id: { match.params && match.params.id || ''}</div>
       <div>{detailInfo.title}</div>
-      <div styleName='detail-content' dangerouslySetInnerHTML={{ __html: detailInfo.content }}></div>
+      <div className='detail-content' dangerouslySetInnerHTML={{ __html: detailInfo.content }}></div>
     </Fragment>
   );
 }

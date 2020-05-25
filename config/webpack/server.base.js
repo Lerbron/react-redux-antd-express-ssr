@@ -64,8 +64,8 @@ module.exports = {
         use: [{
             loader: `css/locals`,
             options: {
-              modules: true,
-              localIdentName: config.class_scoped_name
+              // modules: true,
+              // localIdentName: config.class_scoped_name
               // minimize: true,
               // sourceMap: true
 

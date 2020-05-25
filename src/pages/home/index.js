@@ -38,7 +38,7 @@ class Home extends React.Component {
         })}
 
         {list.map(item => {
-          return <div styleName='list-item' key={item.id} onClick={() => this.goDetail(item)}>{item.title}</div>;
+          return <div className='list-item' key={item.id} onClick={() => this.goDetail(item)}>{item.title}</div>;
         })}
       </div>
     );
