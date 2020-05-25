@@ -31,7 +31,7 @@ class AppRoute extends React.Component {
       let { appStore } = this.props;
       const query = search ? parseUrl(search) : null;
       if (_route && _route.component && _route.component.preFetch) {
-        _route.component.preFetch({ store: appStore, _match, query });
+        _route.component.preFetch({ store: appStore, match: _match, query });
       }
     });
   }
@@ -55,8 +55,6 @@ const run = async () => {
       return true;
     }
   });
-
-  _route.component.preload && (await _route.component.preload());
 
   ReactDOM.hydrate(
     <Provider store={store}>

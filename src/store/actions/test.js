@@ -60,54 +60,20 @@ export function getList(params) {
 
 
 
-function getDetailInfoAction(defailInfo) {
+function getDetailAction(detailInfo) {
   return {
     type: "GET_DETAIL_INFO",
-    defailInfo
-  }
-}
-
-export function getDetailInfo(param) {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-      http.get("/api/services/app/Activity/GetActivity", {
-          params
-        })
-        .then(data => {
-          if (data && data.success) {
-            dispatch(getDetailInfoAction(data.result.items))
-            resolve(data)
-          } else {
-            reject && reject(data)
-          }
-        }, err => {
-          reject && reject(err)
-        })
-    })
-  }
-}
-
-
-function getDetailAction(detail) {
-  return {
-    type: "GET_DETAIL",
-    detail
+    detailInfo
   }
 }
 
 export function getDetail(params) {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      http.get("/api/v1/topics", {
-          params
-        })
+      http.get(`/api/v1/topic/${params.id}`)
         .then(data => {
-          console.log()
           if (data && data.success) {
-            let {
-              page
-            } = params
-            dispatch(getDetailAction(data.data[0]))
+            dispatch(getDetailAction(data.data))
             resolve(data)
           } else {
             reject && reject(data)

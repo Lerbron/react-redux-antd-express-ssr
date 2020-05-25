@@ -12,9 +12,20 @@ const config = {
     ...baseConfig.plugins
   ],
   mode: 'development',
-  devtool: 'cheap-module-inline-source-map'
-}
+  devtool: 'cheap-module-inline-source-map',
+  devServer: {
+    // contentBase: "",//本地服务器所加载的页面所在的目录
+    historyApiFallback: true,//不跳转
+    inline: true,//实时刷新
+    proxy: {
+      '/api': {
+        target: 'https://cnodejs.org',
+        changeOrigin: true,     // target是域名的话，需要这个参数，
+        secure: false,          // 设置支持https协议的代理
+      },
 
-// config.entry.app.push('webpack-hot-middleware/client?path=/__webpack_hmr')
+    }
+  } 
+}
 
 module.exports = config

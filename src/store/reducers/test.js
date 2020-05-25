@@ -21,9 +21,6 @@ export default function test(state = initialState, action = {}) {
     case "GET_DETAIL_INFO":
       state.detailInfo = action.detailInfo
       return merge({}, state);
-    case "GET_DETAIL":
-      state.detail = action.detail
-      return merge({}, state);
 
     default:
       return state;

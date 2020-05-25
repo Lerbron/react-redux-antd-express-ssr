@@ -6,6 +6,8 @@ import Meta from "@/components/meta";
 import { getCategory, getList } from "@/store/actions/test";
 import { Button, Empty, message } from "antd";
 
+import './index.scss'
+
 let page = 1,
   limit = 10;
 
@@ -13,7 +15,6 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: 1,
       limit: 10
     };
   }
@@ -29,7 +30,6 @@ class Home extends React.Component {
         <Meta title="首页" />
 
         <div>Home page!! hello world!!! hhh </div>
-        <button onClick={this.goDetail}>go detail</button>
         <button onClick={this.loadMore}>Load more</button>
         <Button type="primary">Antd </Button>
         <Empty />
@@ -38,15 +38,15 @@ class Home extends React.Component {
         })}
 
         {list.map(item => {
-          return <div key={item.id}>{item.title}</div>;
+          return <div styleName='list-item' key={item.id} onClick={() => this.goDetail(item)}>{item.title}</div>;
         })}
       </div>
     );
   }
 
-  goDetail = () => {
+  goDetail = (item) => {
     let { history } = this.props;
-    history.push("/detail/1");
+    history.push(`/detail/${item.id}`);
   };
 
   loadMore = () => {
@@ -57,7 +57,7 @@ class Home extends React.Component {
       limit
     };
     getList(params).then(res => {
-      this.setState({ page: page + 1 });
+      // this.setState({ page: page + 1 });
     });
   };
 }
@@ -82,6 +82,7 @@ Home.preFetch = ({ store, match, query }) => {
   return new Promise(async function(resolve, reject) {
     let { dispatch, getState } = store;
     const state = getState();
+    if (state.test.list.length > 0) return {}
 
     const params = {
       limit,
