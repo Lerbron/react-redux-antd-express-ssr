@@ -29,7 +29,7 @@ class Home extends React.Component {
       <div>
         <Meta title="首页" />
 
-        <div>Home page!! hello world!!! hhh </div>
+        <div>Home page!! Hello World!!!</div>
         <Button onClick={this.loadMore}>Load more</Button>
         <Button type="primary">Antd </Button>
         <Empty />
