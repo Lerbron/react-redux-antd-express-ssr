@@ -28,7 +28,7 @@
     "history": "^4.10.1",
     "http-proxy-middleware": "^1.0.3",
     "js-cookie": "^2.2.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "node-sass": "^4.9.3",
     "pm2": "^4.3.0",
     "popper.js": "^1.12.9",
